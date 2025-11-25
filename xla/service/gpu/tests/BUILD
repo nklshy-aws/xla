@@ -773,6 +773,7 @@ lit_test_suite_for_gpus(
             "reduce_fold_zero_add.hlo",
             "reduce-precision.hlo",
             "rng_get_and_update_state.hlo",
+            "pdl.hlo",
             "single_instruction.hlo",
             "slice_to_dynamic.hlo",
             "sorting.hlo",
@@ -792,11 +793,13 @@ lit_test_suite_for_gpus(
             "kernel_reuse.hlo",
             "triton_calling_convention.hlo",
             "triton_naming.hlo",
+            "pdl.hlo",
         ],
         "p100": [
             "kernel_reuse.hlo",
             "triton_calling_convention.hlo",
             "triton_naming.hlo",
+            "pdl.hlo",
         ],
         "mi200": [
             "element_wise_row_vectorization.hlo",
@@ -804,6 +807,7 @@ lit_test_suite_for_gpus(
             "single_instruction.hlo",
             "reduce_unnested.hlo",
             "reduction_vectorization_sm_all.hlo",
+            "pdl.hlo",
         ],
     },
     gpus = [
