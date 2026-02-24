@@ -1226,7 +1226,7 @@ cc_library(
 )
 
 cc_library(
-    name = "thunk_proto_serdes",
+    name = "thunk_proto_serdes_impl",
     srcs = ["thunk_proto_serdes.cc"],
     hdrs = ["thunk_proto_serdes.h"],
     deps = [
@@ -1237,8 +1237,6 @@ cc_library(
         ":collective_permute_thunk",
         ":collective_thunk",
         ":conditional_thunk",
-        ":convolution_dims",
-        ":convolution_thunk",
         ":copy_thunk",
         ":custom_call_thunk",
         ":dot_thunk",
@@ -1253,6 +1251,7 @@ cc_library(
         ":sort_thunk",
         ":thunk",
         ":thunk_proto_cc_impl",
+        ":thunk_proto_serdes_utils",
         ":topk_thunk",
         ":while_thunk",
         "//xla:shape_util",
@@ -1282,6 +1281,33 @@ cc_library(
         "@com_google_absl//absl/strings:string_view",
         "@com_google_absl//absl/types:span",
         "@tsl//tsl/platform:casts",
+    ],
+)
+
+# thunk_proto_serdes library links all the thunk serdes types. If a user wants to select which
+# thunks get linked in they should use thunk_proto_serdes_impl and link the thunk_serdes targets
+# they need.
+cc_library(
+    name = "thunk_proto_serdes",
+    hdrs = ["thunk_proto_serdes.h"],
+    deps = [
+        ":thunk_proto_serdes_impl",
+        "//xla/backends/cpu/runtime/thunk_serdes:convolution_thunk_serdes",
+    ],
+)
+
+cc_library(
+    name = "thunk_proto_serdes_utils",
+    srcs = ["thunk_proto_serdes_utils.cc"],
+    hdrs = ["thunk_proto_serdes_utils.h"],
+    deps = [
+        ":thunk",
+        ":thunk_proto_cc",
+        "//xla:shape_util",
+        "//xla/service:buffer_assignment",
+        "//xla/tsl/platform:statusor",
+        "@com_google_absl//absl/status",
+        "@com_google_absl//absl/status:statusor",
     ],
 )
 
@@ -1342,7 +1368,7 @@ xla_cc_test(
         ":thunk",
         ":thunk_executor",
         ":thunk_proto_cc",
-        ":thunk_proto_serdes",
+        ":thunk_proto_serdes_impl",
         ":thunk_testlib",
         ":topk_thunk",
         ":while_thunk",
@@ -1373,6 +1399,9 @@ xla_cc_test(
         "@com_google_absl//absl/types:span",
         "@com_google_googletest//:gtest_main",
         "@tsl//tsl/platform:casts",
+    ] + [
+        # Thunk serdes deps
+        "//xla/backends/cpu/runtime/thunk_serdes:convolution_thunk_serdes",
     ],
 )
 
@@ -1405,5 +1434,22 @@ xla_cc_test(
         "@com_google_absl//absl/log:check",
         "@com_google_absl//absl/status:statusor",
         "@com_google_googletest//:gtest",
+    ],
+)
+
+xla_cc_test(
+    name = "thunk_serdes_dynamic_test",
+    srcs = ["thunk_serdes_dynamic_test.cc"],
+    deps = [
+        ":buffer_allocations",
+        ":thunk",
+        ":thunk_proto_cc",
+        ":thunk_proto_serdes_impl",
+        "//xla/tsl/platform:statusor",
+        "//xla/tsl/platform:test",
+        "@com_google_absl//absl/status",
+        "@com_google_absl//absl/status:statusor",
+        "@com_google_googletest//:gtest",
+        "@com_google_googletest//:gtest_main",
     ],
 )
