@@ -19,6 +19,7 @@ limitations under the License.
 #include <memory>
 #include <string>
 
+#include "absl/base/attributes.h"
 #include "absl/base/nullability.h"
 #include "absl/log/log.h"
 #include "absl/status/statusor.h"
@@ -93,6 +94,7 @@ struct ArraySpec {
   }
 
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("ArraySpec implements AbslStringify; rely on that instead.")
   std::string DebugString() const;
 
   template <typename Sink>

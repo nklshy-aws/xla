@@ -24,6 +24,7 @@ limitations under the License.
 #include <variant>
 #include <vector>
 
+#include "absl/base/attributes.h"
 #include "absl/base/nullability.h"
 #include "absl/hash/hash.h"
 #include "absl/log/check.h"
@@ -174,6 +175,7 @@ class Sharding : public llvm::RTTIExtends<Sharding, Serializable> {
   }
 
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("Sharding implements AbslStringify; rely on that instead.")
   virtual std::string DebugString() const = 0;
 
   template <typename Sink>

@@ -26,6 +26,7 @@ limitations under the License.
 #include <variant>
 
 #include "absl/algorithm/container.h"
+#include "absl/base/attributes.h"
 #include "absl/base/nullability.h"
 #include "absl/container/inlined_vector.h"
 #include "absl/log/check.h"
@@ -85,6 +86,7 @@ class Shape {
   int64_t num_elements() const;
 
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("Shape implements AbslStringify; rely on that instead.")
   std::string DebugString() const;
 
   template <typename Sink>

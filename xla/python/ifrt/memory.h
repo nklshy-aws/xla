@@ -112,6 +112,7 @@ class Memory : public llvm::RTTIExtends<Memory, llvm::RTTIRoot> {
   // enough to describe the current device unambiguously.
   //
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("Memory implements AbslStringify; rely on that instead.")
   virtual absl::string_view DebugString() const = 0;
 
   // The devices to which this memory space is attached.

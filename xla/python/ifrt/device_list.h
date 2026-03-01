@@ -20,6 +20,7 @@ limitations under the License.
 #include <string>
 #include <vector>
 
+#include "absl/base/attributes.h"
 #include "absl/log/check.h"
 #include "absl/status/statusor.h"
 #include "absl/types/span.h"
@@ -108,6 +109,7 @@ class DeviceList : public tsl::ReferenceCounted<DeviceList>,
   virtual uint64_t fingerprint() const;
 
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("DeviceList implements AbslStringify; rely on that instead.")
   std::string DebugString() const { return ToString(); }
 
   static char ID;  // NOLINT

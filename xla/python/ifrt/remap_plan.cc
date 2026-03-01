@@ -616,7 +616,7 @@ std::string RemapPlan::DebugString() const {
         "[",
         absl::StrJoin(array_specs, ",",
                       [](std::string* out, const ArraySpec& spec) {
-                        absl::StrAppend(out, spec.DebugString());
+                        absl::StrAppend(out, spec);
                       }),
         "]");
   };

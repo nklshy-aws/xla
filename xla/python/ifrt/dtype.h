@@ -20,6 +20,7 @@ limitations under the License.
 #include <ostream>
 #include <string>
 
+#include "absl/base/attributes.h"
 #include "absl/status/statusor.h"
 #include "xla/python/ifrt/dtype.pb.h"
 #include "xla/python/ifrt/serdes_default_version_accessor.h"
@@ -149,6 +150,7 @@ class DType {
   }
 
   // TODO(hyeontaek): Remove this method in favor of AbslStringify.
+  ABSL_DEPRECATED("DType implements AbslStringify; rely on that instead.")
   std::string DebugString() const;
 
   template <typename Sink>
