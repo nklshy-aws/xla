@@ -5504,7 +5504,7 @@ int64_t SpmdPartitioner::CommunicationCostInBytes(HloInstruction* hlo) {
     case HloOpcode::kAllToAll: {
       int64_t group_size;
       if (hlo->has_replica_groups()) {
-        group_size = hlo->device_list().num_devices_per_group();
+        group_size = hlo->device_list()->num_devices_per_group();
       } else {
         group_size = hlo->channel_id() ? num_partitions_ : num_replicas_;
       }
