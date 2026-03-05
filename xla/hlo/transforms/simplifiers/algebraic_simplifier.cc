@@ -2531,13 +2531,13 @@ AlgebraicSimplifierVisitor::RemoveDegenerateDimensionFromDot(
 
   HloInstruction* new_lhs =
       num_degenerate_lhs_dims > 0
-          ? dot->parent()->AddInstruction(HloInstruction::CreateReshape(
+          ? dot->AddInstruction(HloInstruction::CreateReshape(
                 ShapeUtil::DropDegenerateDimensions(lhs_shape),
                 dot->mutable_operand(0)))
           : dot->mutable_operand(0);
   HloInstruction* new_rhs =
       num_degenerate_rhs_dims > 0
-          ? dot->parent()->AddInstruction(HloInstruction::CreateReshape(
+          ? dot->AddInstruction(HloInstruction::CreateReshape(
                 ShapeUtil::DropDegenerateDimensions(rhs_shape),
                 dot->mutable_operand(1)))
           : dot->mutable_operand(1);
@@ -9224,7 +9224,7 @@ absl::Status AlgebraicSimplifierVisitor::HandleSqrt(HloInstruction* sqrt) {
           primitive_util::ComplexComponentType(element_type));
 
       HloInstruction* abs =
-          sqrt->parent()->AddInstruction(HloInstruction::CreateUnary(
+          sqrt->AddInstruction(HloInstruction::CreateUnary(
               abs_shape, HloOpcode::kAbs, sqrt_operand->mutable_operand(0)));
 
       return ReplaceWithNewInstruction(
@@ -10022,10 +10022,10 @@ absl::StatusOr<bool> AlgebraicSimplifierVisitor::SimplifyConvToMultiply(
   }
 
   // Replace convolution with reduce(input * broadcast(kernel))
-  kernel = convolution->parent()->AddInstruction(
+  kernel = convolution->AddInstruction(
       HloInstruction::CreateBroadcastSequence(
           input->shape(), kernel, [&](std::unique_ptr<HloInstruction> added) {
-            return convolution->parent()->AddInstruction(std::move(added));
+            return convolution->AddInstruction(std::move(added));
           }));
   TF_ASSIGN_OR_RETURN(HloInstruction * result,
                       MakeBinaryHlo(HloOpcode::kMultiply, input, kernel));
